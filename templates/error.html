@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Error</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body>
+  <main class="page">
+    <section class="workspace intro">
+      <div class="panel panel-main">
+        <h1>No se pudo completar la accion</h1>
+        <p class="error-text">{{ error }}</p>
+        <a class="button primary" href="{{ url_for('inicio') }}">Volver</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
