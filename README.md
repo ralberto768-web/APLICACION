@@ -7,8 +7,11 @@ La carpeta incluye los datos necesarios para funcionar tras descargar el reposit
 ## Ejecutar
 
 ```powershell
-cd C:\Users\armga\OneDrive\Escritorio\TFG\APLICACION
-& 'C:\Users\armga\AppData\Local\Programs\Python\Python313\python.exe' app.py
+cd APLICACION
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+python app.py
 ```
 
 Despues abre:
@@ -21,7 +24,7 @@ Si el puerto 5000 esta ocupado:
 
 ```powershell
 $env:PORT='5001'
-& 'C:\Users\armga\AppData\Local\Programs\Python\Python313\python.exe' app.py
+python app.py
 ```
 
 La verdad original del audio se mantiene oculta hasta pulsar `Validar` en la pantalla de diagnostico.
