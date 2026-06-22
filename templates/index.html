@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Diagnostico UjaNet</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body>
+  <main class="page">
+    <header class="topbar">
+      <a class="brand" href="{{ url_for('inicio') }}">Diagnostico UjaNet</a>
+      {% if pantalla != "inicio" %}
+        <span class="current">{{ etiqueta if etiqueta is defined else diagnostico.etiqueta_audio }}</span>
+      {% endif %}
+    </header>
+
+    {% if pantalla == "inicio" %}
+      <section class="workspace intro">
+        <div class="panel panel-main">
+          <h1>Seleccion de audio</h1>
+          <form class="selector-form" action="{{ url_for('accion') }}" method="post">
+            <label for="audio_id">Audio</label>
+            <select id="audio_id" name="audio_id">
+              {% for audio in audios %}
+                <option value="{{ audio.id_publico }}" {% if audio.id_publico == seleccionado %}selected{% endif %}>
+                  {{ audio.etiqueta }}
+                </option>
+              {% endfor %}
+            </select>
+            <div class="actions">
+              <button type="submit" name="accion" value="representar">Representar</button>
+              <button type="submit" name="accion" value="diagnosticar" class="primary">Diagnosticar</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    {% elif pantalla == "representar" %}
+      <section class="workspace">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Representaciones</p>
+            <h1>{{ etiqueta }}</h1>
+          </div>
+          <div class="actions compact">
+            <a class="button ghost" href="{{ url_for('inicio', audio=audio_id) }}">Volver</a>
+            <a class="button primary" href="{{ url_for('diagnosticar', audio_id=audio_id) }}">Diagnosticar</a>
+          </div>
+        </div>
+
+        <div class="audio-row">
+          <audio controls src="{{ url_for('audio', audio_id=audio_id) }}"></audio>
+        </div>
+
+        <div class="grid two">
+          <article class="plot-card wide">
+            <h2>Tiempo</h2>
+            <img src="data:image/png;base64,{{ graficas.tiempo }}" alt="Senal en tiempo">
+          </article>
+          <article class="plot-card wide">
+            <h2>Frecuencia</h2>
+            <img src="data:image/png;base64,{{ graficas.frecuencia }}" alt="Representacion en frecuencia">
+          </article>
+        </div>
+
+        <div class="grid two">
+          {% for grafica in graficas.matrices %}
+            <article class="plot-card">
+              <div class="plot-title">
+                <h2>{{ grafica.titulo }}</h2>
+                <span>{{ grafica.forma }}</span>
+              </div>
+              <img src="data:image/png;base64,{{ grafica.imagen }}" alt="{{ grafica.titulo }}">
+            </article>
+          {% endfor %}
+        </div>
+      </section>
+    {% elif pantalla == "diagnosticar" %}
+      <section class="workspace diagnosis">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Prueba UjaNet</p>
+            <h1>{{ diagnostico.etiqueta_audio }}</h1>
+          </div>
+          <div class="actions compact">
+            <a class="button ghost" href="{{ url_for('inicio', audio=audio_id) }}">Volver</a>
+            <a class="button" href="{{ url_for('representar', audio_id=audio_id) }}">Representar</a>
+          </div>
+        </div>
+
+        <article class="result-panel">
+          <p class="label">Resultados estimados</p>
+          <h2>UjaNet en las 6 pruebas</h2>
+          <div class="diagnosis-table-wrap">
+            <table class="diagnosis-table">
+              <thead>
+                <tr>
+                  <th>Prueba</th>
+                  <th>Prediccion</th>
+                  <th>Binario</th>
+                  <th>Fold</th>
+                  {% if validar %}<th>Validacion</th>{% endif %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for resultado in diagnostico.resultados %}
+                  <tr class="{{ 'ok-row' if validar and resultado.acierto else 'fail-row' if validar else '' }}">
+                    <td>{{ resultado.representacion_titulo }}</td>
+                    <td>
+                      <strong>{{ resultado.prediccion_multiclase }}</strong>
+                      <span>{{ resultado.prediccion_multiclase_nombre }}</span>
+                    </td>
+                    <td>{{ resultado.prediccion_binaria }}</td>
+                    <td>{{ resultado.fold }}</td>
+                    {% if validar %}
+                      <td>
+                        <span class="status {{ 'ok' if resultado.acierto else 'fail' }}">
+                          {{ "Acierta" if resultado.acierto else "Se equivoca" }}
+                        </span>
+                      </td>
+                    {% endif %}
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+          {% if not validar %}
+            <a class="button primary validate" href="{{ url_for('diagnosticar', audio_id=audio_id, validar=1) }}">Validar</a>
+          {% else %}
+            <div class="validation">
+              <p class="label">Resultado original</p>
+              <h3>{{ diagnostico.clase_real }} &middot; {{ diagnostico.clase_real_nombre }}</h3>
+              <div class="result-grid">
+                <div>
+                  <span>Etiqueta real</span>
+                  <strong>{{ diagnostico.etiqueta_real_binaria }}</strong>
+                </div>
+                <div>
+                  <span>Archivo original</span>
+                  <strong>{{ diagnostico.archivo_original }}</strong>
+                </div>
+                <div>
+                  <span>Aciertos</span>
+                  <strong>{{ diagnostico.aciertos }} de {{ diagnostico.resultados|length }}</strong>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        </article>
+      </section>
+    {% endif %}
+  </main>
+</body>
+</html>
