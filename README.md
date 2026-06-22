@@ -6,6 +6,16 @@ La carpeta incluye los datos necesarios para funcionar tras descargar el reposit
 
 ## Ejecutar
 
+En Windows, doble clic en:
+
+```text
+ejecutar_app.bat
+```
+
+Ese archivo crea un entorno local, instala los requisitos y arranca la aplicacion.
+
+Ejecucion manual:
+
 ```powershell
 cd APLICACION
 python -m venv .venv
