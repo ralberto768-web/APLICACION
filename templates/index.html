@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Diagnostico UjaNet</title>
+  <title>Analizador de senales cardiacas</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
 </head>
 <body>
   <main class="page">
     <header class="topbar">
-      <a class="brand" href="{{ url_for('inicio') }}">Diagnostico UjaNet</a>
+      <a class="brand" href="{{ url_for('inicio') }}">Analizador de senales cardiacas</a>
       {% if pantalla != "inicio" %}
         <span class="current">{{ etiqueta if etiqueta is defined else diagnostico.etiqueta_audio }}</span>
       {% endif %}
@@ -18,9 +18,9 @@
     {% if pantalla == "inicio" %}
       <section class="workspace intro">
         <div class="panel panel-main">
-          <h1>Seleccion de audio</h1>
+          <h1>Seleccion de senal cardiaca</h1>
           <form class="selector-form" action="{{ url_for('accion') }}" method="post">
-            <label for="audio_id">Audio</label>
+            <label for="audio_id">Registro PCG</label>
             <select id="audio_id" name="audio_id">
               {% for audio in audios %}
                 <option value="{{ audio.id_publico }}" {% if audio.id_publico == seleccionado %}selected{% endif %}>
@@ -79,7 +79,7 @@
       <section class="workspace diagnosis">
         <div class="section-head">
           <div>
-            <p class="eyebrow">Prueba UjaNet</p>
+            <p class="eyebrow">Diagnostico automatico</p>
             <h1>{{ diagnostico.etiqueta_audio }}</h1>
           </div>
           <div class="actions compact">
@@ -90,12 +90,12 @@
 
         <article class="result-panel">
           <p class="label">Resultados estimados</p>
-          <h2>UjaNet en las 6 pruebas</h2>
+          <h2>Resultados de las 6 pruebas</h2>
           <div class="diagnosis-table-wrap">
             <table class="diagnosis-table">
               <thead>
                 <tr>
-                  <th>Prueba</th>
+                  <th>Metodo</th>
                   <th>Prediccion</th>
                   <th>Binario</th>
                   <th>Fold</th>
