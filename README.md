@@ -1,6 +1,6 @@
-# Aplicacion local UjaNet
+# Analizador de senales cardiacas
 
-Aplicacion Flask portable para seleccionar audios anonimos de la base Yaseen, visualizar sus representaciones y mostrar el diagnostico UjaNet validado.
+Aplicacion Flask portable para seleccionar senales cardiacas anonimas de la base Yaseen, visualizar sus representaciones y mostrar el diagnostico validado.
 
 La carpeta incluye los datos necesarios para funcionar tras descargar el repositorio. En el primer arranque, si no existe `datos_app/audios_yaseen.zip`, la app lo reconstruye automaticamente a partir de los archivos `datos_app/audios_yaseen.zip.b64.partXXX`.
 
@@ -37,4 +37,4 @@ $env:PORT='5001'
 python app.py
 ```
 
-La verdad original del audio se mantiene oculta hasta pulsar `Validar` en la pantalla de diagnostico.
+La verdad original de la senal se mantiene oculta hasta pulsar `Validar` en la pantalla de diagnostico.
