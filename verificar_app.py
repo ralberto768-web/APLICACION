@@ -6,8 +6,8 @@ from servicios_datos import diagnostico_audio, listar_audios, representaciones_a
 def main() -> int:
     audios = listar_audios()
     assert len(audios) == 1000, f"Se esperaban 1000 audios y hay {len(audios)}"
-    assert audios[0].etiqueta == "audio1"
-    assert audios[-1].etiqueta == "audio1000"
+    assert audios[0].etiqueta == "PCG 0001"
+    assert audios[-1].etiqueta == "PCG 1000"
 
     for audio_id in (1, 250, 500, 750, 1000):
         reps = representaciones_audio(audio_id)
