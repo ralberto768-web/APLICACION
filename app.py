@@ -82,7 +82,7 @@ def audio(audio_id: int):
         contenido = bytes_audio(audio_id)
     except Exception:
         abort(404)
-    return send_file(BytesIO(contenido), mimetype="audio/wav", download_name=f"audio{audio_id}.wav")
+    return send_file(BytesIO(contenido), mimetype="audio/wav", download_name=f"PCG_{audio_id:04d}.wav")
 
 
 if __name__ == "__main__":
