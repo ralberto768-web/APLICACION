@@ -138,7 +138,7 @@ def listar_audios() -> list[AudioAnonimo]:
     return [
         AudioAnonimo(
             id_publico=posicion,
-            etiqueta=f"audio{posicion}",
+            etiqueta=f"PCG {posicion:04d}",
             indice_interno=int(df.iloc[indice]["indice_interno"]),
             duracion_s=float(df.iloc[indice]["duracion_s"]),
         )
@@ -149,13 +149,13 @@ def listar_audios() -> list[AudioAnonimo]:
 def resolver_indice(id_publico: int) -> int:
     mapping = mapa_anonimo()
     if id_publico < 1 or id_publico > len(mapping):
-        raise ValueError(f"Audio fuera de rango: audio{id_publico}")
+        raise ValueError(f"Senal cardiaca fuera de rango: PCG {id_publico:04d}")
     return int(mapping[id_publico - 1])
 
 
 def etiqueta_audio(id_publico: int) -> str:
     resolver_indice(id_publico)
-    return f"audio{id_publico}"
+    return f"PCG {id_publico:04d}"
 
 
 def fila_audio(id_publico: int) -> pd.Series:
